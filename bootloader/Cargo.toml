@@ -1,0 +1,9 @@
+[package]
+name = "htmlboot"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+uefi = { workspace = true, features = ["global_allocator", "panic_handler", "logger"] }
+htmlboot-core.workspace = true
+htmlboot-uefi.workspace = true

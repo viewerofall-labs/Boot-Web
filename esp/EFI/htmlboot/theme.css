@@ -1,0 +1,30 @@
+body {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+}
+
+.card {
+    background-color: #313244;
+    border-color: #45475a;
+    color: #cdd6f4;
+}
+
+h1 {
+    color: #89b4fa;
+}
+
+.entry {
+    background-color: #181825;
+    border-color: #313244;
+    color: #cdd6f4;
+}
+
+.entry.selected {
+    background-color: #313244;
+    border-color: #89b4fa;
+    color: #89b4fa;
+}
+
+footer {
+    color: #9399b2;
+}

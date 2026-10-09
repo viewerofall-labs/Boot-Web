@@ -1,0 +1,9 @@
+[package]
+name = "htmlboot-uefi"
+version.workspace = true
+edition.workspace = true
+description = "UEFI glue for htmlboot-core: GOP surface, input, boot entries"
+
+[dependencies]
+uefi.workspace = true
+htmlboot-core.workspace = true

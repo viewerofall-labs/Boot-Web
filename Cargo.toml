@@ -1,0 +1,21 @@
+[workspace]
+resolver = "2"
+members = ["crates/htmlboot-core", "crates/htmlboot-uefi", "bootloader"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+uefi = { version = "0.35", features = ["alloc"] }
+htmlboot-core = { path = "crates/htmlboot-core" }
+htmlboot-uefi = { path = "crates/htmlboot-uefi" }
+
+[profile.release]
+opt-level = 2
+lto = false
+panic = "abort"
+codegen-units = 1
+
+[profile.dev]
+panic = "abort"
