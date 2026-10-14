@@ -15,7 +15,8 @@ pub use css::{ComputedStyle, Stylesheet};
 pub use font::{FONT_DATA, FONT_HEIGHT, FONT_WIDTH};
 pub use html::{Element, HtmlDocument, Node};
 pub use ui::{
-    draw_char, draw_cursor, draw_rect_outline, draw_text, render_menu_ui, HtmlTheme, MenuState,
+    draw_char, draw_cursor, draw_rect_outline, draw_text, render_menu_ui,
+    BgFill, EntryRotation, HtmlTheme, LayoutConfig, LayoutMode, MenuState,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -159,5 +160,76 @@ mod tests {
         );
         render_menu_ui(&mut s, &theme, &menu);
         assert!(!s.calls.is_empty());
+    }
+
+    #[test]
+    fn test_render_menu_rotated_90() {
+        let mut s = Recorder { calls: Vec::new() };
+        let entries = vec![BootEntry {
+            id: "test.conf".into(),
+            title: "Test Linux".into(),
+            version: None,
+            linux: "/vmlinuz".into(),
+            initrd: None,
+            options: None,
+        }];
+        let menu = MenuState::new(entries);
+        let theme = HtmlTheme::from_html_and_css(
+            Some("<h1>Boot</h1>"),
+            Some("body { background-color: #1e1e2e; } :root { --entry-rotate: 90; }"),
+        );
+        render_menu_ui(&mut s, &theme, &menu);
+        assert!(!s.calls.is_empty());
+    }
+
+    #[test]
+    fn test_render_menu_horizontal_layout() {
+        let mut s = Recorder { calls: Vec::new() };
+        let entries = vec![
+            BootEntry {
+                id: "a.conf".into(),
+                title: "Linux".into(),
+                version: None,
+                linux: "/vmlinuz".into(),
+                initrd: None,
+                options: None,
+            },
+            BootEntry {
+                id: "b.conf".into(),
+                title: "Recovery".into(),
+                version: None,
+                linux: "/vmlinuz-rescue".into(),
+                initrd: None,
+                options: None,
+            },
+        ];
+        let menu = MenuState::new(entries);
+        let theme = HtmlTheme::from_html_and_css(
+            Some("<h1>Boot</h1>"),
+            Some("body { background-color: #000; } :root { --layout: horizontal; }"),
+        );
+        render_menu_ui(&mut s, &theme, &menu);
+        assert!(!s.calls.is_empty());
+    }
+
+    #[test]
+    fn test_render_menu_checkerboard_bg() {
+        let mut s = Recorder { calls: Vec::new() };
+        let entries = vec![BootEntry {
+            id: "t.conf".into(),
+            title: "T".into(),
+            version: None,
+            linux: "/vmlinuz".into(),
+            initrd: None,
+            options: None,
+        }];
+        let menu = MenuState::new(entries);
+        let theme = HtmlTheme::from_html_and_css(
+            Some("<h1>Boot</h1>"),
+            Some("body { background-color: #000; } :root { --bg-fill: checkerboard; --bg-pattern-color: #333; }"),
+        );
+        render_menu_ui(&mut s, &theme, &menu);
+        // Checkerboard generates many more rects than solid fill
+        assert!(s.calls.len() > 10);
     }
 }

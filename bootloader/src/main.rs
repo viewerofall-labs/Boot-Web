@@ -78,7 +78,7 @@ fn main() -> Status {
                 let new_y = cur_y.clamp(0, sh.saturating_sub(1) as i32) as usize;
                 menu.cursor_pos = (new_x, new_y);
 
-                if let Some(hit) = menu.hit_test(new_x, new_y, sw, sh) {
+                if let Some(hit) = menu.hit_test(new_x, new_y, sw, sh, &theme.layout) {
                     if menu.selected != hit {
                         menu.selected = hit;
                     }
@@ -98,7 +98,7 @@ fn main() -> Status {
                 let new_y = cur_y.clamp(0, sh.saturating_sub(1) as i32) as usize;
                 menu.cursor_pos = (new_x, new_y);
 
-                if let Some(hit) = menu.hit_test(new_x, new_y, sw, sh) {
+                if let Some(hit) = menu.hit_test(new_x, new_y, sw, sh, &theme.layout) {
                     if menu.selected != hit {
                         menu.selected = hit;
                     }
@@ -107,7 +107,7 @@ fn main() -> Status {
             }
             UserAction::PointerClick => {
                 menu.cursor_visible = true;
-                if let Some(hit) = menu.hit_test(menu.cursor_pos.0, menu.cursor_pos.1, sw, sh) {
+                if let Some(hit) = menu.hit_test(menu.cursor_pos.0, menu.cursor_pos.1, sw, sh, &theme.layout) {
                     menu.selected = hit;
                     if let Some(entry) = menu.selected_entry() {
                         boot_target = Some(entry.clone());
